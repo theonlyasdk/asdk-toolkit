@@ -1,7 +1,4 @@
 $(async function () {
-    const tool_baseurl = "http://127.0.0.1:8080"; // for local testing
-    // const tool_baseurl = "https://theonlyasdk.github.io/electronics-toolkit"; // use this for public url
-
     try {
         let response;
         response = await fetch('./data/tools_data.json');
@@ -21,11 +18,10 @@ $(async function () {
                 <hr class="mt-2" />
             `);
 
-            let tool_card_container = `<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">`;
+            let tool_card_container = `<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 mb-3">`;
         
             data[key].forEach(tool => {
                 const tool_source = `https://github.com/theonlyasdk/electronics-toolkit/${tool.url}`;
-                const tool_url = `${tool_baseurl}/${tool.url}`;
         
                 tool_card_container += `
                 <div class="col d-flex">
@@ -37,7 +33,7 @@ $(async function () {
                                 <a href="${tool_source}" class="btn btn-outline-primary mt-auto" target="_blank" title="View on GitHub">
                                     <i class="bi bi-github me-1"></i> GitHub
                                 </a>
-                                <a href="${tool_url}" class="btn btn-primary mt-auto" target="_blank">
+                                <a href="${tool.url}" class="btn btn-primary mt-auto" target="_blank">
                                     <i class="bi bi-box-arrow-up-right"></i> Open Tool
                                 </a>
                             </div>
@@ -58,13 +54,21 @@ $(async function () {
         `);
     }
 
-    $(".theme-option").on("click", function (e) {
-        e.preventDefault();
-        const theme = $(this).data("theme");
+    const storedTheme = localStorage.getItem("asdk-toolkit-theme") || "auto";
+    function applyTheme(theme) {
         if (theme === "auto") {
-            document.body.removeAttribute("data-bs-theme");
+            const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            document.body.setAttribute("data-bs-theme", prefersDark ? "dark" : "light");
         } else {
             document.body.setAttribute("data-bs-theme", theme);
         }
+    }
+    applyTheme(storedTheme);
+
+    $(".theme-option").on("click", function (e) {
+        e.preventDefault();
+        const theme = $(this).data("theme");
+        localStorage.setItem("asdk-toolkit-theme", theme);
+        applyTheme(theme);
     });
 });

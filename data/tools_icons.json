@@ -1,3 +1,4 @@
 {
-	"Encoders": "bi-qr-code"
+	"Encoders": "bi-qr-code",
+	"Generators": "bi-shuffle"
 }

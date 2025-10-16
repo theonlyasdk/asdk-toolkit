@@ -21,4 +21,4 @@
 - Use spaces with tab width 4
 
 ## What is this?
-I made this document as a guide for LLMs to make tools for me, but if you want to create a tool for this project yourself as a practice for your coding skills, you can use this blueprint as a guide for developing a tool.
+I made this document as a guide for LLMs to make tools for me, but if you want to create a tool for this project yourself as a practice for your coding skills, you can use this blueprint as a guide for developing a tool for this project.
