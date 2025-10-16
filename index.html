@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ASDK Toolkit</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+
+<body data-bs-theme="dark">
+    <div class="container py-4">
+        <header class="mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-2 mt-4">
+                <h1 class="fw-bold d-flex flex-row align-items-center gap-2 mb-0">
+                    ASDK Toolkit
+                </h1>
+
+                <!-- Theme toggle dropdown -->
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"
+                        title="Select theme">
+                        <i class="bi bi-sun"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow">
+                        <li><a class="dropdown-item theme-option" href="#" data-theme="light"><i
+                                    class="bi bi-sun me-2"></i>Light</a></li>
+                        <li><a class="dropdown-item theme-option" href="#" data-theme="dark"><i
+                                    class="bi bi-moon me-2"></i>Dark</a></li>
+                        <li><a class="dropdown-item theme-option" href="#" data-theme="auto"><i
+                                    class="bi bi-circle-half me-2"></i>Auto</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <p class="text-muted mb-0 mt-3">
+                A collection of small web tools including calculators, converters, encoders for making your life easier!
+                Hope you like it!
+            </p>
+        </header>
+
+        <section class="mb-5 card p-3 shadow-sm" id="tools-section">
+            <div class="d-flex flex-column gap-2 w-100 align-items-center justify-content-center">
+                <span class="loader"></span>
+                <p>Loading....</p>
+            </div>
+        </section>
+
+        <footer class="text-center pt-3 border-top">
+            <p class="small text-muted mb-3">
+                If you find any issues, please open an issue at <a
+                    href="https://github.com/theonlyasdk/asdk-toolkit/issues">https://github.com/theonlyasdk/asdk-toolkit/issues</a>
+            </p>
+            <a href="https://github.com/theonlyasdk/asdk-toolkit/" target="_blank"
+                class="text-decoration-none text-info">
+                <i class="bi bi-github fs-4"></i><br>View on GitHub
+            </a>
+        </footer>
+    </div>
+</body>
+<script src="js/index.js"></script>
+
+</html>

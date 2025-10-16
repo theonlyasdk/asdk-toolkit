@@ -1,0 +1,10 @@
+{
+  "Encoders": [
+    {
+      "name": "Base64 Tools",
+      "description": "Encode and decode Base64 to text and vice versa.",
+      "url": "tools/encoders/base64.html",
+      "banner": "images/encoders/base64.png"
+    }
+  ]
+}
