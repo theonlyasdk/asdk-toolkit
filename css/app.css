@@ -1,7 +1,13 @@
 * {
 	font-family: "Roboto", sans-serif;
 }
-
+.asdk-toolkit {
+	font-family: "Barlow Condensed", sans-serif;
+	font-size: 4em;
+}
+.manrope {
+	  font-family: "Manrope", sans-serif;
+}
 code, pre, kbd, .code {
 	font-family: "Inconsolata", monospace;
 }
