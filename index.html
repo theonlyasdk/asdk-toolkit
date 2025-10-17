@@ -15,10 +15,11 @@
         href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inconsolata:wght@200..900&family=Manrope:wght@200..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/ripple-btn.css">
 </head>
 
 <body data-bs-theme="dark">
-    <header class="mb-1 border-bottom pb-4">
+    <header class="mb-1 border-bottom pb-4 shadow-sm">
         <div class="container d-flex justify-content-between align-items-center mb-2 mt-4">
             <h1 class="mt-4 asdk-toolkit fw-bold d-flex flex-row align-items-center gap-2 mb-0">
                 ASDK Toolkit
@@ -56,19 +57,26 @@
             </div>
         </section>
     </div>
-    <footer class="d-flex flex-column align-items-center justify-content-center text-center pt-3 pb-3 border-top">
+    <footer
+        class="d-flex flex-column align-items-center justify-content-center text-center pt-3 pb-3 border-top shadow-top">
         <p class="small text-muted mb-3">
             If you find any issues, please open an issue at <a
                 href="https://github.com/theonlyasdk/asdk-toolkit/issues">https://github.com/theonlyasdk/asdk-toolkit/issues</a>
         </p>
-        <small>
+        <small class="footer-icons d-flex align-items-center gap-2">
             <a href="https://github.com/theonlyasdk/asdk-toolkit/" target="_blank" style="max-width: max-content;"
                 class="d-flex flex-row gap-2 align-items-center justify-content-center text-decoration-none text-info">
                 <i class="bi bi-github fs-4"></i>View on GitHub
+            </a>
+            &bull;
+            <a href="https://github.com/theonlyasdk/" target="_blank" style="max-width: max-content;"
+                class="d-flex flex-row gap-1 align-items-center justify-content-center text-decoration-none text-info">
+                <i class="bi bi-person-fill fs-4"></i>By theonlyasdk
             </a>
         </small>
     </footer>
 </body>
 <script src="js/index.js"></script>
+<script src="js/ripple-btn.js" defer></script>
 
 </html>

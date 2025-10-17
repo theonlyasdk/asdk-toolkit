@@ -58,18 +58,21 @@
 </head>
 <body>
     <header class="d-flex align-items-center gap-3 flex-wrap">
-        <h5 class="mb-0">Base64 Tools</h5>
+        <h5 class="mb-0">
+            <i class="bi bi-file-earmark-binary"></i>
+            Base64 Tools
+        </h5>
 
         <div class="ms-auto d-flex align-items-center gap-2 flex-wrap">
+            <select class="form-select form-select-sm" id="encodingMode" style="width:230px;" title="Choose Base64 flavor">
+                <option value="standard">Standard Base64</option>
+                <option value="url">Base64 URL-safe (base64url)</option>
+            </select>
+
             <select class="form-select form-select-sm" id="themeSelect" style="width:130px;" title="Select theme">
                 <option value="auto">Auto Theme</option>
                 <option value="light">Light Theme</option>
                 <option value="dark">Dark Theme</option>
-            </select>
-
-            <select class="form-select form-select-sm" id="encodingMode" style="width:230px;" title="Choose Base64 flavor">
-                <option value="standard">Standard Base64</option>
-                <option value="url">Base64 URL-safe (base64url)</option>
             </select>
         </div>
     </header>

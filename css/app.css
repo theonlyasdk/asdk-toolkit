@@ -15,7 +15,7 @@ code, pre, kbd, .code {
   box-shadow: 0 2px 5px 0px #00000088;
 }
 .btn:active {
-  filter: brightness(70%);
+  /*filter: brightness(70%);*/
   box-shadow: 0 2px 2px 0px #00000044;
 }
 .loader {
@@ -31,7 +31,13 @@ code, pre, kbd, .code {
 	box-sizing: border-box;
 	animation: barStripe 1s linear infinite;
 }
-
+.shadow-top {
+	/* Derived from bootstrap class shadow-sm */
+	box-shadow: 0 -0.125rem 0.25rem rgba(0, 0, 0, 0.075);;
+}
+.footer-icons>a>i {
+	font-size: 0.6rem;
+}
 @keyframes barStripe {
 	0% {
 	background-position: 1em 0;

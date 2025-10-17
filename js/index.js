@@ -45,7 +45,7 @@ $(async function () {
             tool_card_container += `</div>`;
             tools_section.append(tool_card_container);
         });
-
+        registerRippleHandler();
     } catch (err) {
         console.error("Failed to load tools: ", err);
         $("#tools-section").html(`
