@@ -1,4 +1,5 @@
 {
 	"Encoders": "bi-qr-code",
-	"Generators": "bi-shuffle"
+	"Generators": "bi-shuffle",
+	"Calculators": "bi-calculator-fill"
 }

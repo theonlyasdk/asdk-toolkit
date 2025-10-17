@@ -14,5 +14,13 @@
       "url": "tools/generators/uuid.html",
       "banner": "images/generators/uuid.png"
     }
+  ],
+  "Calculators": [
+    {
+      "name": "Resistor Value Calculator",
+      "description": "Find resistance and tolerance values of a resistor using color bands.",
+      "url": "tools/calculators/resistor_value_calc.html",
+      "banner": "images/calculators/resistor_value_calc.png"
+    }
   ]
 }
