@@ -1,29 +1,30 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Resistor Value Calculator</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <style>
-	.serif {
-  	font-family: 'Times New Roman', serif;
-  	font-size: 1.3em;
-	}
-  </style>
-</head>
-<body class="bg-light">
-<div class="container py-4">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h3 class="m-0 d-flex flex-row align-items-center justify-content-center gap-2">
-	<!-- SVG credits: https://www.svgrepo.com/svg/162003/resistor -->
-	<svg height="48px" width="48px" id="Capa_1" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
-		 viewBox="0 0 13.894 13.894" xml:space="preserve" title="Icon from svgrepo.com">
-	<g>
-		<path style="fill:#030104;" d="M11.285,3.234l2.529-2.529L13.108,0L10.58,2.529l-0.69-0.691c-0.315-0.315-0.829-0.315-1.146,0
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Resistor Value Calculator</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <style>
+            .serif {
+                font-family: "Times New Roman", serif;
+                font-size: 1.3em;
+            }
+        </style>
+    </head>
+    <body class="bg-light">
+        <div class="container py-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="m-0 d-flex flex-row align-items-center justify-content-center gap-2">
+                    <!-- SVG credits: https://www.svgrepo.com/svg/162003/resistor -->
+                    <svg height="48px" width="48px" id="Capa_1" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 13.894 13.894" xml:space="preserve" title="Icon from svgrepo.com">
+                        <g>
+                            <path
+                                style="fill: #030104"
+                                d="M11.285,3.234l2.529-2.529L13.108,0L10.58,2.529l-0.69-0.691c-0.315-0.315-0.829-0.315-1.146,0
 			L6.739,3.842C6.673,3.908,6.645,4.006,6.668,4.098l0.089,0.359l-1.98,1.979L4.418,6.347C4.326,6.325,4.229,6.351,4.162,6.418
 			L2.03,8.553c-0.316,0.315-0.316,0.829,0,1.145l0.77,0.771l-2.72,2.72l0.705,0.705l2.72-2.72l0.77,0.77
 			c0.316,0.315,0.83,0.315,1.146,0l2.132-2.133c0.048-0.048,0.076-0.11,0.079-0.177l0.023-0.44l1.93-1.931L9.899,7.31
@@ -33,200 +34,207 @@
 			 M7.697,8.387L5.644,6.335l0.918-0.918l2.052,2.051L7.697,8.387z M9.845,6.756L9.531,6.709c-0.085-0.013-0.17,0.015-0.23,0.076
 			L9.284,6.801L7.232,4.749l0.017-0.016c0.066-0.067,0.094-0.165,0.07-0.257L7.231,4.118l0.495-0.496l2.627,2.626L9.845,6.756z
 			 M11.753,4.847L11.02,5.579L8.394,2.952l0.732-0.731c0.105-0.106,0.277-0.105,0.382,0l2.245,2.244
-			C11.857,4.571,11.858,4.742,11.753,4.847z"/>
-	</g>
-	</svg>
-		Resistor Value Calculator
-	</h3>
-    <select id="bands" class="form-select form-select-sm" style="width:auto;" title="Select resistor band type">
-      <option value="3">3-band</option>
-      <option value="4" selected>4-band</option>
-      <option value="5">5-band</option>
-      <option value="6">6-band</option>
-    </select>
-  </div>
+			C11.857,4.571,11.858,4.742,11.753,4.847z"
+                            />
+                        </g>
+                    </svg>
+                    Resistor Value Calculator
+                </h3>
+                <select id="bands" class="form-select form-select-sm" style="width: auto" title="Select resistor band type">
+                    <option value="3">3-band</option>
+                    <option value="4" selected>4-band</option>
+                    <option value="5">5-band</option>
+                    <option value="6">6-band</option>
+                </select>
+            </div>
 
-  <div class="card mb-3">
-    <div class="card-body">
-      <form id="calc" class="row g-2 align-items-end">
-        <div class="col-auto">
-          <label class="form-label small mb-1">Band 1</label>
-          <select id="b1" class="form-select form-select-sm">
-            <option style="background:black;color:white;" value="0">black</option>
-            <option style="background:brown;color:white;" value="1" selected>brown</option>
-            <option style="background:red;color:white;" value="2">red</option>
-            <option style="background:orange;" value="3">orange</option>
-            <option style="background:yellow;color:black;" value="4">yellow</option>
-            <option style="background:green;color:white;" value="5">green</option>
-            <option style="background:blue;color:white;" value="6">blue</option>
-            <option style="background:violet;color:white;" value="7">violet</option>
-            <option style="background:grey;color:white;" value="8">grey</option>
-            <option style="background:white;color:black;" value="9">white</option>
-          </select>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <form id="calc" class="row g-2 align-items-end">
+                        <div class="col-auto">
+                            <label class="form-label small mb-1">Band 1</label>
+                            <select id="b1" class="form-select form-select-sm">
+                                <option style="background: black; color: white" value="0">black</option>
+                                <option style="background: brown; color: white" value="1" selected>brown</option>
+                                <option style="background: red; color: white" value="2">red</option>
+                                <option style="background: orange" value="3">orange</option>
+                                <option style="background: yellow; color: black" value="4">yellow</option>
+                                <option style="background: green; color: white" value="5">green</option>
+                                <option style="background: blue; color: white" value="6">blue</option>
+                                <option style="background: violet; color: white" value="7">violet</option>
+                                <option style="background: grey; color: white" value="8">grey</option>
+                                <option style="background: white; color: black" value="9">white</option>
+                            </select>
+                        </div>
+
+                        <div class="col-auto">
+                            <label class="form-label small mb-1">Band 2</label>
+                            <select id="b2" class="form-select form-select-sm">
+                                <option style="background: black; color: white" value="0" selected>black</option>
+                                <option style="background: brown; color: white" value="1">brown</option>
+                                <option style="background: red; color: white" value="2">red</option>
+                                <option style="background: orange" value="3">orange</option>
+                                <option style="background: yellow; color: black" value="4">yellow</option>
+                                <option style="background: green; color: white" value="5">green</option>
+                                <option style="background: blue; color: white" value="6">blue</option>
+                                <option style="background: violet; color: white" value="7">violet</option>
+                                <option style="background: grey; color: white" value="8">grey</option>
+                                <option style="background: white; color: black" value="9">white</option>
+                            </select>
+                        </div>
+
+                        <div id="band3wrap" class="col-auto d-none">
+                            <label class="form-label small mb-1">Band 3</label>
+                            <select id="b3" class="form-select form-select-sm">
+                                <option style="background: black; color: white" value="0" selected>black</option>
+                                <option style="background: brown; color: white" value="1">brown</option>
+                                <option style="background: red; color: white" value="2">red</option>
+                                <option style="background: orange" value="3">orange</option>
+                                <option style="background: yellow" value="4">yellow</option>
+                                <option style="background: green; color: white" value="5">green</option>
+                                <option style="background: blue; color: white" value="6">blue</option>
+                                <option style="background: violet; color: white" value="7">violet</option>
+                                <option style="background: grey; color: white" value="8">grey</option>
+                                <option style="background: white" value="9">white</option>
+                            </select>
+                        </div>
+
+                        <div class="col-auto">
+                            <label class="form-label small mb-1">Multiplier</label>
+                            <select id="mult" class="form-select form-select-sm">
+                                <option style="background: black; color: white" value="1" selected>black (×1)</option>
+                                <option style="background: brown; color: white" value="10">brown (×10)</option>
+                                <option style="background: red; color: white" value="100">red (×100)</option>
+                                <option style="background: orange" value="1000">orange (×1k)</option>
+                                <option style="background: yellow" value="10000">yellow (×10k)</option>
+                                <option style="background: green; color: white" value="100000">green (×100k)</option>
+                                <option style="background: blue; color: white" value="1000000">blue (×1M)</option>
+                                <option style="background: violet; color: white" value="10000000">violet (×10M)</option>
+                                <option style="background: grey; color: white" value="100000000">grey (×100M)</option>
+                                <option style="background: white" value="1000000000">white (×1G)</option>
+                                <option style="background: gold" value="0.1">gold (×0.1)</option>
+                                <option style="background: silver" value="0.01">silver (×0.01)</option>
+                            </select>
+                        </div>
+
+                        <div class="col-auto">
+                            <label class="form-label small mb-1">Tolerance</label>
+                            <select id="tol" class="form-select form-select-sm">
+                                <option style="background: brown; color: white" value="1" selected>brown ±1%</option>
+                                <option style="background: red; color: white" value="2">red ±2%</option>
+                                <option style="background: green; color: white" value="0.5">green ±0.5%</option>
+                                <option style="background: blue; color: white" value="0.25">blue ±0.25%</option>
+                                <option style="background: violet; color: white" value="0.1">violet ±0.1%</option>
+                                <option style="background: grey; color: white" value="0.05">grey ±0.05%</option>
+                                <option style="background: gold" value="5">gold ±5%</option>
+                                <option style="background: silver" value="10">silver ±10%</option>
+                                <option style="background: white" value="20">none ±20%</option>
+                            </select>
+                        </div>
+
+                        <div id="tempwrap" class="col-auto d-none">
+                            <label class="form-label small mb-1">Temp. Coeff.</label>
+                            <select id="temp" class="form-select form-select-sm">
+                                <option style="background: brown; color: white" value="100">brown (100ppm/K)</option>
+                                <option style="background: red; color: white" value="50">red (50ppm/K)</option>
+                                <option style="background: orange" value="15">orange (15ppm/K)</option>
+                                <option style="background: yellow" value="25">yellow (25ppm/K)</option>
+                                <option style="background: blue; color: white" value="10">blue (10ppm/K)</option>
+                                <option style="background: violet; color: white" value="5">violet (5ppm/K)</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div id="out" class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="mb-1">Resistance Value</h5>
+                            <p id="value" class="fs-4 fw-bold">—</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="mb-1">Tolerance Value</h5>
+                            <p id="tolerance" class="fs-5">—</p>
+                            <p id="tempco" class="fs-6 text-muted"></p>
+                        </div>
+                    </div>
+                    <hr />
+                    <div>
+                        <h5>What are resistor color codes?</h5>
+                        <p class="mb-2">Resistors use color bands to represent their resistance value and tolerance. Each colored band corresponds to a digit or multiplier based on a standardized color code table.</p>
+
+                        <h6>General Formula</h6>
+                        <p class="serif">Resistance Value (Ω) = (Significant Figures) × 10<sup>Multiplier Band</sup></p>
+
+                        <h6>Example (4-Band Resistor)</h6>
+                        If the bands are Brown, Black, Red, and Gold:
+                        <p class="serif">Resistance = (10) × 10² = 1000 Ω ±5%</p>
+
+                        <h6>Resistor Band Types</h6>
+                        <ul>
+                            <li><strong>3-Band:</strong> Two significant figures and a multiplier (no tolerance).</li>
+                            <li><strong>4-Band:</strong> Two significant figures, multiplier, and tolerance.</li>
+                            <li><strong>5-Band:</strong> Three significant figures, multiplier, and tolerance.</li>
+                            <li><strong>6-Band:</strong> Three significant figures, multiplier, tolerance, and temperature coefficient (in ppm/K).</li>
+                        </ul>
+
+                        <p class="mt-2 mb-0">The tolerance defines the possible range of resistance values. For instance, a 1 kΩ ±5% resistor may range between 950 Ω and 1050 Ω.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-2 text-center small border-top">
+                <i class="bi bi-arrow-left-circle pr-3 link-secondary"></i>
+                <a href="https://theonlyasdk.github.io/asdk-toolkit" class="link-secondary" title="Go back to ASDK Toolkit"> Go back to ASDK Toolkit </a>
+            </div>
         </div>
 
-        <div class="col-auto">
-          <label class="form-label small mb-1">Band 2</label>
-          <select id="b2" class="form-select form-select-sm">
-            <option style="background:black;color:white;" value="0" selected>black</option>
-            <option style="background:brown;color:white;" value="1">brown</option>
-            <option style="background:red;color:white;" value="2">red</option>
-            <option style="background:orange;" value="3">orange</option>
-            <option style="background:yellow;color:black;" value="4">yellow</option>
-            <option style="background:green;color:white;" value="5">green</option>
-            <option style="background:blue;color:white;" value="6">blue</option>
-            <option style="background:violet;color:white;" value="7">violet</option>
-            <option style="background:grey;color:white;" value="8">grey</option>
-            <option style="background:white;color:black;" value="9">white</option>
-          </select>
-        </div>
-
-        <div id="band3wrap" class="col-auto d-none">
-          <label class="form-label small mb-1">Band 3</label>
-          <select id="b3" class="form-select form-select-sm">
-            <option style="background:black;color:white;" value="0" selected>black</option>
-            <option style="background:brown;color:white;" value="1">brown</option>
-            <option style="background:red;color:white;" value="2">red</option>
-            <option style="background:orange;" value="3">orange</option>
-            <option style="background:yellow;" value="4">yellow</option>
-            <option style="background:green;color:white;" value="5">green</option>
-            <option style="background:blue;color:white;" value="6">blue</option>
-            <option style="background:violet;color:white;" value="7">violet</option>
-            <option style="background:grey;color:white;" value="8">grey</option>
-            <option style="background:white;" value="9">white</option>
-          </select>
-        </div>
-
-        <div class="col-auto">
-          <label class="form-label small mb-1">Multiplier</label>
-          <select id="mult" class="form-select form-select-sm">
-            <option style="background:black;color:white;" value="1" selected>black (×1)</option>
-            <option style="background:brown;color:white;" value="10">brown (×10)</option>
-            <option style="background:red;color:white;" value="100">red (×100)</option>
-            <option style="background:orange;" value="1000">orange (×1k)</option>
-            <option style="background:yellow;" value="10000">yellow (×10k)</option>
-            <option style="background:green;color:white;" value="100000">green (×100k)</option>
-            <option style="background:blue;color:white;" value="1000000">blue (×1M)</option>
-            <option style="background:violet;color:white;" value="10000000">violet (×10M)</option>
-            <option style="background:grey;color:white;" value="100000000">grey (×100M)</option>
-            <option style="background:white;" value="1000000000">white (×1G)</option>
-            <option style="background:gold;" value="0.1">gold (×0.1)</option>
-            <option style="background:silver;" value="0.01">silver (×0.01)</option>
-          </select>
-        </div>
-
-        <div class="col-auto">
-          <label class="form-label small mb-1">Tolerance</label>
-          <select id="tol" class="form-select form-select-sm">
-            <option style="background:brown;color:white;" value="1" selected>brown ±1%</option>
-            <option style="background:red;color:white;" value="2">red ±2%</option>
-            <option style="background:green;color:white;" value="0.5">green ±0.5%</option>
-            <option style="background:blue;color:white;" value="0.25">blue ±0.25%</option>
-            <option style="background:violet;color:white;" value="0.1">violet ±0.1%</option>
-            <option style="background:grey;color:white;" value="0.05">grey ±0.05%</option>
-            <option style="background:gold;" value="5">gold ±5%</option>
-            <option style="background:silver;" value="10">silver ±10%</option>
-            <option style="background:white;" value="20">none ±20%</option>
-          </select>
-        </div>
-
-		<div id="tempwrap" class="col-auto d-none">
-		  <label class="form-label small mb-1">Temp. Coeff.</label>
-		  <select id="temp" class="form-select form-select-sm">
-			<option style="background:brown;color:white;" value="100">brown (100ppm/K)</option>
-			<option style="background:red;color:white;" value="50">red (50ppm/K)</option>
-			<option style="background:orange;" value="15">orange (15ppm/K)</option>
-			<option style="background:yellow;" value="25">yellow (25ppm/K)</option>
-			<option style="background:blue;color:white;" value="10">blue (10ppm/K)</option>
-			<option style="background:violet;color:white;" value="5">violet (5ppm/K)</option>
-		  </select>
-		</div>
-
-      </form>
-    </div>
-  </div>
-
-  <div id="out" class="card">
-    <div class="card-body">
-      <div class="row">
-        <div class="col-md-6">
-          <h5 class="mb-1">Resistance Value</h5>
-          <p id="value" class="fs-4 fw-bold">—</p>
-        </div>
-        <div class="col-md-6">
-          <h5 class="mb-1">Tolerance Value</h5>
-          <p id="tolerance" class="fs-5">—</p>
-          <p id="tempco" class="fs-6 text-muted"></p>
-        </div>
-      </div>
-      <hr>
-      <div>
-        <h5>What are resistor color codes?</h5>
-        <p class="mb-2">Resistors use color bands to represent their resistance value and tolerance. Each colored band corresponds to a digit or multiplier based on a standardized color code table.</p>
-
-        <h6>General Formula</h6>
-        <p class="serif">Resistance Value (Ω) = (Significant Figures) × 10<sup>Multiplier Band</sup></p>
-
-        <h6>Example (4-Band Resistor)</h6>
-		If the bands are Brown, Black, Red, and Gold:
-        <p class="serif">Resistance = (10) × 10² = 1000 Ω ±5%</p>
-
-        <h6>Resistor Band Types</h6>
-        <ul>
-          <li><strong>3-Band:</strong> Two significant figures and a multiplier (no tolerance).</li>
-          <li><strong>4-Band:</strong> Two significant figures, multiplier, and tolerance.</li>
-          <li><strong>5-Band:</strong> Three significant figures, multiplier, and tolerance.</li>
-          <li><strong>6-Band:</strong> Three significant figures, multiplier, tolerance, and temperature coefficient (in ppm/K).</li>
-        </ul>
-
-        <p class="mt-2 mb-0">The tolerance defines the possible range of resistance values. For instance, a 1 kΩ ±5% resistor may range between 950 Ω and 1050 Ω.</p>
-      </div>
-    </div>
-  </div>
-
-    <div class="p-2 text-center small border-top">
-        <i class="bi bi-arrow-left-circle pr-3 link-secondary"></i>
-        <a href="https://theonlyasdk.github.io/asdk-toolkit" class="link-secondary" title="Go back to ASDK Toolkit">
-            Go back to ASDK Toolkit
-        </a>
-    </div>
-</div>
-
-<script>
-$(function(){
-  function formatOhms(n){
-    if (n>=1e9) return (n/1e9)+' GΩ';
-    if (n>=1e6) return (n/1e6)+' MΩ';
-    if (n>=1e3) return (n/1e3)+' kΩ';
-    return n+' Ω';
-  }
-  function compute(){
-    var bands = $('#bands').val();
-    var d1 = parseInt($('#b1').val()), d2 = parseInt($('#b2').val()), mult = parseFloat($('#mult').val()), tol = $('#tol').val();
-    var val, tempText='';
-    if (bands==='3'){
-      val = (d1*10 + d2) * mult;
-      $('#band3wrap').addClass('d-none'); $('#tempwrap').addClass('d-none');
-    } else if (bands==='4'){
-      val = (d1*10 + d2) * mult;
-      $('#band3wrap').addClass('d-none'); $('#tempwrap').addClass('d-none');
-    } else if (bands==='5'){
-      var d3 = parseInt($('#b3').val());
-      val = (d1*100 + d2*10 + d3) * mult;
-      $('#band3wrap').removeClass('d-none'); $('#tempwrap').addClass('d-none');
-    } else {
-      var d3 = parseInt($('#b3').val()), temp = $('#temp option:selected').text();
-      val = (d1*100 + d2*10 + d3) * mult;
-      tempText = temp;
-      $('#band3wrap').removeClass('d-none'); $('#tempwrap').removeClass('d-none');
-    }
-    $('#value').text(formatOhms(Number(val.toFixed(6))));
-    $('#tolerance').text('±'+tol+'%');
-    if (tempText) $('#tempco').text('Temperature coefficient: '+tempText);
-  }
-  $('#bands, #calc select').on('change',compute);
-  compute();
-});
-</script>
-</body>
+        <script>
+            $(() => {
+                function formatOhms(n) {
+                    if (n >= 1e9) return n / 1e9 + " GΩ";
+                    if (n >= 1e6) return n / 1e6 + " MΩ";
+                    if (n >= 1e3) return n / 1e3 + " kΩ";
+                    return n + " Ω";
+                }
+                function compute() {
+                    var bands = $("#bands").val();
+                    var d1 = parseInt($("#b1").val()),
+                        d2 = parseInt($("#b2").val()),
+                        mult = parseFloat($("#mult").val()),
+                        tol = $("#tol").val();
+                    var val,
+                        tempText = "";
+                    if (bands === "3") {
+                        val = (d1 * 10 + d2) * mult;
+                        $("#band3wrap").addClass("d-none");
+                        $("#tempwrap").addClass("d-none");
+                    } else if (bands === "4") {
+                        val = (d1 * 10 + d2) * mult;
+                        $("#band3wrap").addClass("d-none");
+                        $("#tempwrap").addClass("d-none");
+                    } else if (bands === "5") {
+                        const d3 = parseInt($("#b3").val());
+                        val = (d1 * 100 + d2 * 10 + d3) * mult;
+                        $("#band3wrap").removeClass("d-none");
+                        $("#tempwrap").addClass("d-none");
+                    } else {
+                        const d3 = parseInt($("#b3").val()),
+                            temp = $("#temp option:selected").text();
+                        val = (d1 * 100 + d2 * 10 + d3) * mult;
+                        tempText = temp;
+                        $("#band3wrap").removeClass("d-none");
+                        $("#tempwrap").removeClass("d-none");
+                    }
+                    $("#value").text(formatOhms(Number(val.toFixed(6))));
+                    $("#tolerance").text("±" + tol + "%");
+                    if (tempText) $("#tempco").text("Temperature coefficient: " + tempText);
+                }
+                $("#bands, #calc select").on("change", compute);
+                compute();
+            });
+        </script>
+    </body>
 </html>
