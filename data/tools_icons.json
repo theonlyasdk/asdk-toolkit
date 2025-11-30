@@ -1,5 +1,6 @@
 {
-	"Encoders": "bi-qr-code",
-	"Generators": "bi-shuffle",
-	"Calculators": "bi-calculator-fill"
+    "Encoders": "bi-qr-code",
+    "Generators": "bi-shuffle",
+    "Calculators": "bi-calculator-fill",
+    "Converters": "bi-arrow-left-right"
 }

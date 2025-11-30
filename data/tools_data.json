@@ -1,26 +1,40 @@
 {
-  "Encoders": [
-    {
-      "name": "Base64 Tools",
-      "description": "Encode and decode Base64 to text and vice versa.",
-      "url": "tools/encoders/base64.html",
-      "banner": "images/encoders/base64.png"
-    }
-  ],
-  "Generators": [
-    {
-      "name": "UUID Generator",
-      "description": "Generate UUIDs.",
-      "url": "tools/generators/uuid.html",
-      "banner": "images/generators/uuid.png"
-    }
-  ],
-  "Calculators": [
-    {
-      "name": "Resistor Value Calculator",
-      "description": "Find resistance and tolerance values of a resistor using color bands.",
-      "url": "tools/calculators/resistor_value_calc.html",
-      "banner": "images/calculators/resistor_value_calc.png"
-    }
-  ]
+    "Encoders": [
+        {
+            "name": "Base64 Tools",
+            "description": "Encode and decode Base64 to text and vice versa.",
+            "url": "tools/encoders/base64.html",
+            "banner": "images/encoders/base64.png"
+        }
+    ],
+    "Generators": [
+        {
+            "name": "UUID Generator",
+            "description": "Generate UUIDs.",
+            "url": "tools/generators/uuid.html",
+            "banner": "images/generators/uuid.png"
+        }
+    ],
+    "Calculators": [
+        {
+            "name": "Resistor Value Calculator",
+            "description": "Find resistance and tolerance values of a resistor using color bands.",
+            "url": "tools/calculators/resistor_value_calc.html",
+            "banner": "images/calculators/resistor_value_calc.png"
+        }
+    ],
+    "Converters": [
+        {
+            "name": "Unit Converter",
+            "description": "Convert from one unit to another",
+            "url": "tools/converters/unit_converter.html",
+            "banner": "images/converters/unit_converter.png"
+        },
+        {
+            "name": "Color Converter",
+            "description": "Convert between different color formats such as HSL, CMYK, RGB and Hex",
+            "url": "tools/converters/color_converter.html",
+            "banner": "images/converters/color_converter.png"
+        }
+    ]
 }

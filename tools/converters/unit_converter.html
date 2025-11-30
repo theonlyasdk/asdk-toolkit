@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Unit Converter – ASDK Toolkit</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata&display=swap" rel="stylesheet" />
+
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        #main {
+            flex: 1 1 auto;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+        @media (min-width: 768px) {
+            #main {
+                max-width: 960px;
+                margin: 0 auto;
+            }
+        }
+        header {
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid var(--bs-border-color);
+        }
+        /* Custom tweaks to match other tools */
+        .result-display {
+            font-family: "Inconsolata", monospace;
+            font-size: 1.25rem;
+            background-color: var(--bs-tertiary-bg);
+        }
+    </style>
+</head>
+<body>
+    <header class="d-flex align-items-center gap-3 flex-wrap">
+        <h5 class="mb-0"><i class="bi bi-arrow-left-right"></i> Unit Converter</h5>
+        <div class="ms-auto d-flex align-items-center gap-2 flex-wrap">
+            <select class="form-select form-select-sm" id="themeSelect" style="width: 130px" title="Select theme">
+                <option value="auto">Auto Theme</option>
+                <option value="light">Light Theme</option>
+                <option value="dark">Dark Theme</option>
+            </select>
+        </div>
+    </header>
+
+    <main id="main" class="container-fluid">
+        
+        <div class="row mb-4 justify-content-center">
+            <div class="col-md-6">
+                <label for="categorySelect" class="form-label small text-uppercase fw-bold text-muted">Category</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-grid"></i></span>
+                    <select class="form-select" id="categorySelect">
+                        <option value="length">Length</option>
+                        <option value="mass">Mass / Weight</option>
+                        <option value="temperature">Temperature</option>
+                        <option value="area">Area</option>
+                        <option value="time">Time</option>
+                        <option value="digital">Digital Storage</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="row g-3 align-items-center">
+                    
+                    <div class="col-md-5">
+                        <label class="form-label small text-muted">From</label>
+                        <input type="number" class="form-control form-control-lg mb-2" id="inputVal" value="1" placeholder="Enter value">
+                        <select class="form-select form-select-sm" id="fromUnit"></select>
+                    </div>
+
+                    <div class="col-md-2 text-center py-2">
+                        <button class="btn btn-outline-secondary rounded-circle" id="swapBtn" title="Swap Units">
+                            <i class="bi bi-arrow-left-right"></i>
+                        </button>
+                    </div>
+
+                    <div class="col-md-5">
+                        <label class="form-label small text-muted">To</label>
+                        <div class="form-control form-control-lg mb-2 d-flex align-items-center result-display text-truncate" id="outputVal">
+                            ---
+                        </div>
+                        <select class="form-select form-select-sm" id="toUnit"></select>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4 text-center text-muted small fade show" id="formulaDisplay">
+            </div>
+
+    </main>
+
+    <div class="p-2 text-center small border-top">
+        <i class="bi bi-arrow-left-circle link-secondary"></i>
+        <a href="https://theonlyasdk.github.io/asdk-toolkit" class="link-secondary" title="Go back to ASDK Toolkit"> Go back to ASDK Toolkit </a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        (($) => {
+            // === DATA DEFINITIONS ===
+            const definitions = {
+                length: {
+                    base: 'm',
+                    units: {
+                        m: { name: 'Meter', rate: 1 },
+                        km: { name: 'Kilometer', rate: 1000 },
+                        cm: { name: 'Centimeter', rate: 0.01 },
+                        mm: { name: 'Millimeter', rate: 0.001 },
+                        mi: { name: 'Mile', rate: 1609.344 },
+                        yd: { name: 'Yard', rate: 0.9144 },
+                        ft: { name: 'Foot', rate: 0.3048 },
+                        in: { name: 'Inch', rate: 0.0254 }
+                    }
+                },
+                mass: {
+                    base: 'g',
+                    units: {
+                        g: { name: 'Gram', rate: 1 },
+                        kg: { name: 'Kilogram', rate: 1000 },
+                        mg: { name: 'Milligram', rate: 0.001 },
+                        lb: { name: 'Pound', rate: 453.59237 },
+                        oz: { name: 'Ounce', rate: 28.34952 }
+                    }
+                },
+                time: {
+                    base: 's',
+                    units: {
+                        s: { name: 'Second', rate: 1 },
+                        min: { name: 'Minute', rate: 60 },
+                        h: { name: 'Hour', rate: 3600 },
+                        d: { name: 'Day', rate: 86400 },
+                        wk: { name: 'Week', rate: 604800 },
+                        y: { name: 'Year (365d)', rate: 31536000 }
+                    }
+                },
+                area: {
+                    base: 'm2',
+                    units: {
+                        m2: { name: 'Square Meter', rate: 1 },
+                        km2: { name: 'Square Kilometer', rate: 1000000 },
+                        ft2: { name: 'Square Foot', rate: 0.092903 },
+                        ac: { name: 'Acre', rate: 4046.86 },
+                        ha: { name: 'Hectare', rate: 10000 }
+                    }
+                },
+                digital: {
+                    base: 'b',
+                    units: {
+                        b: { name: 'Bit', rate: 1 },
+                        B: { name: 'Byte', rate: 8 },
+                        KB: { name: 'Kilobyte', rate: 8192 },
+                        MB: { name: 'Megabyte', rate: 8388608 },
+                        GB: { name: 'Gigabyte', rate: 8589934592 },
+                        TB: { name: 'Terabyte', rate: 8796093022208 }
+                    }
+                },
+                temperature: {
+                    special: true, // Requires custom logic, not simple multiplier
+                    units: {
+                        c: { name: 'Celsius' },
+                        f: { name: 'Fahrenheit' },
+                        k: { name: 'Kelvin' }
+                    }
+                }
+            };
+
+            // === THEME HANDLING (Standard ASDK) ===
+            const $theme = $("#themeSelect");
+            function applyTheme(mode) {
+                if (mode === "auto") {
+                    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+                    document.body.setAttribute("data-bs-theme", prefersDark ? "dark" : "light");
+                } else {
+                    document.body.setAttribute("data-bs-theme", mode);
+                }
+            }
+            const storedMode = localStorage.getItem("asdk-toolkit-theme") || "auto";
+            $theme.val(storedMode);
+            applyTheme(storedMode);
+            $theme.on("change", function () {
+                const val = $(this).val();
+                localStorage.setItem("asdk-toolkit-theme", val);
+                applyTheme(val);
+            });
+
+            // === CONVERTER LOGIC ===
+            const $cat = $('#categorySelect');
+            const $from = $('#fromUnit');
+            const $to = $('#toUnit');
+            const $in = $('#inputVal');
+            const $out = $('#outputVal');
+            const $formula = $('#formulaDisplay');
+
+            function populateUnits() {
+                const cat = $cat.val();
+                const units = definitions[cat].units;
+                let options = '';
+                
+                Object.keys(units).forEach(key => {
+                    options += `<option value="${key}">${units[key].name}</option>`;
+                });
+
+                $from.html(options);
+                $to.html(options);
+
+                // Set defaults (first and second item if possible)
+                const keys = Object.keys(units);
+                if (keys.length > 1) $to.val(keys[1]);
+            }
+
+            function convert() {
+                const cat = $cat.val();
+                const fromKey = $from.val();
+                const toKey = $to.val();
+                let val = parseFloat($in.val());
+
+                if (isNaN(val)) {
+                    $out.text('---');
+                    $formula.text('');
+                    return;
+                }
+
+                let result;
+                let formulaText = '';
+
+                if (definitions[cat].special && cat === 'temperature') {
+                    // Temperature Specific Logic
+                    if (fromKey === toKey) result = val;
+                    else if (fromKey === 'c' && toKey === 'f') result = (val * 9/5) + 32;
+                    else if (fromKey === 'c' && toKey === 'k') result = val + 273.15;
+                    else if (fromKey === 'f' && toKey === 'c') result = (val - 32) * 5/9;
+                    else if (fromKey === 'f' && toKey === 'k') result = (val - 32) * 5/9 + 273.15;
+                    else if (fromKey === 'k' && toKey === 'c') result = val - 273.15;
+                    else if (fromKey === 'k' && toKey === 'f') result = (val - 273.15) * 9/5 + 32;
+                } else {
+                    // Standard Linear Conversion
+                    const fromRate = definitions[cat].units[fromKey].rate;
+                    const toRate = definitions[cat].units[toKey].rate;
+                    
+                    // Convert to base then to target
+                    const baseVal = val * fromRate;
+                    result = baseVal / toRate;
+                }
+
+                // Formatting
+                // Avoid scientific notation for small manageable numbers, keep precision for others
+                let displayRes = result;
+                if (!Number.isInteger(result)) {
+                    displayRes = parseFloat(result.toFixed(6)); // Clean up floating point errors
+                }
+                
+                $out.text(displayRes);
+                
+                // Simple feedback
+                $formula.text(`1 ${definitions[cat].units[fromKey].name} ≈ ${(result/val).toPrecision(4)} ${definitions[cat].units[toKey].name}`);
+            }
+
+            // Events
+            $cat.on('change', () => {
+                populateUnits();
+                convert();
+            });
+
+            $from.on('change', convert);
+            $to.on('change', convert);
+            $in.on('input', convert);
+
+            $('#swapBtn').on('click', () => {
+                const prevFrom = $from.val();
+                const prevTo = $to.val();
+                $from.val(prevTo);
+                $to.val(prevFrom);
+                convert();
+            });
+
+            // Initialize
+            populateUnits();
+            convert();
+
+        })(jQuery);
+    </script>
+</body>
+</html>

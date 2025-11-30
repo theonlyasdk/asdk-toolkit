@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Color Converter – ASDK Toolkit</title>
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Inconsolata&display=swap" rel="stylesheet" />
+
+        <style>
+            body {
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+            #main {
+                flex: 1 1 auto;
+                padding: 1rem;
+                overflow-y: auto;
+            }
+            @media (min-width: 768px) {
+                #main {
+                    max-width: 960px;
+                    margin: 0 auto;
+                }
+            }
+            header {
+                padding: 0.5rem 0.75rem;
+                border-bottom: 1px solid var(--bs-border-color);
+            }
+
+            /* Custom Styles */
+            .color-preview {
+                height: 150px;
+                border-radius: 0.5rem;
+                border: 2px solid var(--bs-border-color);
+                position: relative;
+                transition: background-color 0.1s;
+                box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .code-font {
+                font-family: "Inconsolata", monospace;
+            }
+
+            /* Iro.js Customization */
+            .iro-picker-container {
+                display: flex;
+                justify-content: center;
+                padding: 1rem;
+                background: var(--bs-tertiary-bg);
+                border-radius: 0.5rem;
+                border: 1px solid var(--bs-border-color);
+            }
+
+            .mobile-picker-btn {
+                height: 60px;
+                width: 100%;
+                border: 2px dashed var(--bs-border-color);
+                background: transparent;
+                color: var(--bs-body-color);
+                border-radius: 0.5rem;
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+            }
+            .mobile-picker-btn:hover {
+                background: var(--bs-tertiary-bg);
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Header -->
+        <header class="d-flex align-items-center gap-3 flex-wrap">
+            <h5 class="mb-0"><i class="bi bi-palette"></i> Color Converter</h5>
+            <div class="ms-auto d-flex align-items-center gap-2 flex-wrap">
+                <select class="form-select form-select-sm" id="themeSelect" style="width: 130px" title="Select theme">
+                    <option value="auto">Auto Theme</option>
+                    <option value="light">Light Theme</option>
+                    <option value="dark">Dark Theme</option>
+                </select>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main id="main" class="container-fluid">
+            <div class="row g-4">
+                <!-- Left Column: Picker & Preview -->
+                <div class="col-lg-5">
+                    <!-- Color Preview Box -->
+                    <div class="mb-3">
+                        <label class="form-label small text-muted">Preview</label>
+                        <div id="colorPreview" class="color-preview d-flex align-items-center justify-content-center">
+                            <span id="contrastText" class="fw-bold fs-4">Text</span>
+                        </div>
+                    </div>
+
+                    <!-- Desktop Picker (Iro.js) -->
+                    <div id="desktopPickerWrapper" class="mb-3 d-none">
+                        <label class="form-label small text-muted">Color Picker</label>
+                        <div class="iro-picker-container mb-2">
+                            <div id="iroPicker"></div>
+                        </div>
+                        <button class="btn btn-outline-secondary w-100 btn-sm" id="forceSystemPickerBtn"><i class="bi bi-droplet"></i> Use System Picker</button>
+                    </div>
+
+                    <!-- Mobile Picker (Native) -->
+                    <div id="mobilePickerWrapper" class="mb-3 d-none">
+                        <label class="form-label small text-muted">System Picker</label>
+                        <button id="mobilePickerBtn" class="mobile-picker-btn"><i class="bi bi-droplet-fill"></i> Tap to Pick Color</button>
+                    </div>
+
+                    <!-- Hidden native input (Moved outside wrappers to be accessible in both modes) -->
+                    <input type="color" id="nativeColorInput" style="opacity: 0; position: absolute; width: 1px; height: 1px; pointer-events: none" />
+                </div>
+
+                <!-- Right Column: Values -->
+                <div class="col-lg-7">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-body-tertiary">
+                            <span class="fw-bold"><i class="bi bi-code-slash"></i> Color Values</span>
+                        </div>
+                        <div class="card-body d-flex flex-column gap-3">
+                            <!-- HEX -->
+                            <div>
+                                <label class="form-label small fw-bold text-muted mb-1">HEX</label>
+                                <div class="input-group">
+                                    <span class="input-group-text code-font">#</span>
+                                    <input type="text" class="form-control code-font" id="inputHex" maxlength="7" />
+                                    <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('#inputHex')"><i class="bi bi-clipboard"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- RGB -->
+                            <div>
+                                <label class="form-label small fw-bold text-muted mb-1">RGB</label>
+                                <div class="row g-2">
+                                    <div class="col-4">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text text-danger">R</span>
+                                            <input type="number" class="form-control code-font color-part" id="inputR" min="0" max="255" />
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text text-success">G</span>
+                                            <input type="number" class="form-control code-font color-part" id="inputG" min="0" max="255" />
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text text-primary">B</span>
+                                            <input type="number" class="form-control code-font color-part" id="inputB" min="0" max="255" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input-group input-group-sm mt-1">
+                                    <input type="text" class="form-control code-font text-muted" id="stringRGB" readonly />
+                                    <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('#stringRGB')"><i class="bi bi-clipboard"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- HSL -->
+                            <div>
+                                <label class="form-label small fw-bold text-muted mb-1">HSL</label>
+                                <div class="row g-2">
+                                    <div class="col-4">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text">H</span>
+                                            <input type="number" class="form-control code-font color-part" id="inputH" min="0" max="360" />
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text">S</span>
+                                            <input type="number" class="form-control code-font color-part" id="inputS" min="0" max="100" />
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text">L</span>
+                                            <input type="number" class="form-control code-font color-part" id="inputL" min="0" max="100" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input-group input-group-sm mt-1">
+                                    <input type="text" class="form-control code-font text-muted" id="stringHSL" readonly />
+                                    <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('#stringHSL')"><i class="bi bi-clipboard"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- CMYK -->
+                            <div>
+                                <label class="form-label small fw-bold text-muted mb-1">CMYK</label>
+                                <div class="row g-2">
+                                    <div class="col-3">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text text-info">C</span>
+                                            <input type="number" class="form-control code-font color-part" id="inputC" min="0" max="100" />
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text text-danger">M</span>
+                                            <input type="number" class="form-control code-font color-part" id="inputM" min="0" max="100" />
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text text-warning">Y</span>
+                                            <input type="number" class="form-control code-font color-part" id="inputY" min="0" max="100" />
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text text-dark">K</span>
+                                            <input type="number" class="form-control code-font color-part" id="inputK" min="0" max="100" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input-group input-group-sm mt-1">
+                                    <input type="text" class="form-control code-font text-muted" id="stringCMYK" readonly />
+                                    <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('#stringCMYK')"><i class="bi bi-clipboard"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div class="p-2 text-center small border-top mt-3">
+            <i class="bi bi-arrow-left-circle link-secondary"></i>
+            <a href="https://theonlyasdk.github.io/asdk-toolkit" class="link-secondary" title="Go back to ASDK Toolkit"> Go back to ASDK Toolkit </a>
+        </div>
+
+        <!-- Libraries -->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- TinyColor2 for robust conversion logic -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tinycolor/1.4.2/tinycolor.min.js"></script>
+        <!-- Iro.js for Desktop Picker -->
+        <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
+
+        <script>
+            // Global utility to copy text
+            function copyToClipboard(selector) {
+                const el = document.querySelector(selector);
+                if (el) {
+                    el.select();
+                    el.setSelectionRange(0, 99999);
+                    navigator.clipboard.writeText(el.value).then(() => {
+                        // Visual feedback could go here
+                        const btn = $(selector).parent().find("button i");
+                        btn.removeClass("bi-clipboard").addClass("bi-check-lg");
+                        setTimeout(() => btn.removeClass("bi-check-lg").addClass("bi-clipboard"), 1000);
+                    });
+                }
+            }
+
+            (($) => {
+                // === THEME HANDLING ===
+                const $theme = $("#themeSelect");
+                function applyTheme(mode) {
+                    if (mode === "auto") {
+                        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+                        document.body.setAttribute("data-bs-theme", prefersDark ? "dark" : "light");
+                    } else {
+                        document.body.setAttribute("data-bs-theme", mode);
+                    }
+                }
+                const storedMode = localStorage.getItem("asdk-toolkit-theme") || "auto";
+                $theme.val(storedMode);
+                applyTheme(storedMode);
+                $theme.on("change", function () {
+                    const val = $(this).val();
+                    localStorage.setItem("asdk-toolkit-theme", val);
+                    applyTheme(val);
+                });
+
+                // === DEVICE DETECTION ===
+                const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.matchMedia("(pointer: coarse)").matches;
+
+                // === PICKER INITIALIZATION ===
+                let colorPicker = null;
+                let preventRecursiveUpdate = false;
+
+                // Shared Native Input Handler
+                $("#nativeColorInput").on("input", function () {
+                    updateFromColor(tinycolor($(this).val()));
+                });
+
+                if (isMobile) {
+                    $("#mobilePickerWrapper").removeClass("d-none");
+                    $("#mobilePickerBtn").on("click", () => {
+                        $("#nativeColorInput").trigger("click");
+                    });
+                } else {
+                    $("#desktopPickerWrapper").removeClass("d-none");
+
+                    // Desktop System Picker Button
+                    $("#forceSystemPickerBtn").on("click", () => {
+                        $("#nativeColorInput").trigger("click");
+                    });
+
+                    colorPicker = new iro.ColorPicker("#iroPicker", {
+                        width: 200,
+                        color: "#3b82f6",
+                        borderWidth: 1,
+                        borderColor: "#ccc",
+                        layout: [{ component: iro.ui.Wheel }, { component: iro.ui.Slider, options: { sliderType: "value" } }],
+                    });
+
+                    colorPicker.on("color:change", (color) => {
+                        if (!preventRecursiveUpdate) {
+                            updateFromColor(tinycolor(color.hexString));
+                        }
+                    });
+                }
+
+                // === UPDATE LOGIC ===
+
+                // Update all inputs from a TinyColor object
+                function updateFromColor(tc) {
+                    if (!tc.isValid()) return;
+
+                    preventRecursiveUpdate = true;
+
+                    const hex = tc.toHexString();
+                    const rgb = tc.toRgb();
+                    const hsl = tc.toHsl();
+                    const hsv = tc.toHsv();
+
+                    // Update Preview
+                    $("#colorPreview").css("background-color", hex);
+                    const isDark = tc.isDark();
+                    $("#contrastText").css("color", isDark ? "#FFF" : "#000");
+
+                    // Update Pickers (Prevent loops)
+                    if (!isMobile && colorPicker && colorPicker.color.hexString.toLowerCase() !== hex.toLowerCase()) {
+                        colorPicker.color.hexString = hex;
+                    }
+
+                    // Always sync hidden input so system picker opens with correct color
+                    $("#nativeColorInput").val(hex);
+
+                    if (isMobile) {
+                        $("#mobilePickerBtn").css("border-color", hex);
+                        $("#mobilePickerBtn").html(`<i class="bi bi-droplet-fill" style="color:${hex}"></i> ${hex.toUpperCase()}`);
+                    }
+
+                    // Update Hex
+                    if ($("#inputHex").val().toLowerCase() !== hex.substring(1)) {
+                        $("#inputHex").val(hex.substring(1).toUpperCase());
+                    }
+
+                    // Update RGB Inputs
+                    if (document.activeElement.id !== "inputR") $("#inputR").val(rgb.r);
+                    if (document.activeElement.id !== "inputG") $("#inputG").val(rgb.g);
+                    if (document.activeElement.id !== "inputB") $("#inputB").val(rgb.b);
+                    $("#stringRGB").val(`rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`);
+
+                    // Update HSL Inputs
+                    if (document.activeElement.id !== "inputH") $("#inputH").val(Math.round(hsl.h));
+                    if (document.activeElement.id !== "inputS") $("#inputS").val(Math.round(hsl.s * 100));
+                    if (document.activeElement.id !== "inputL") $("#inputL").val(Math.round(hsl.l * 100));
+                    $("#stringHSL").val(`hsl(${Math.round(hsl.h)}, ${Math.round(hsl.s * 100)}%, ${Math.round(hsl.l * 100)}%)`);
+
+                    // Update CMYK Inputs
+                    // TinyColor doesn't support CMYK natively, simple conversion here
+                    const k = 1 - Math.max(rgb.r / 255, rgb.g / 255, rgb.b / 255);
+                    const c = (1 - rgb.r / 255 - k) / (1 - k) || 0;
+                    const m = (1 - rgb.g / 255 - k) / (1 - k) || 0;
+                    const y = (1 - rgb.b / 255 - k) / (1 - k) || 0;
+
+                    if (document.activeElement.id !== "inputC") $("#inputC").val(Math.round(c * 100));
+                    if (document.activeElement.id !== "inputM") $("#inputM").val(Math.round(m * 100));
+                    if (document.activeElement.id !== "inputY") $("#inputY").val(Math.round(y * 100));
+                    if (document.activeElement.id !== "inputK") $("#inputK").val(Math.round(k * 100));
+                    $("#stringCMYK").val(`cmyk(${Math.round(c * 100)}%, ${Math.round(m * 100)}%, ${Math.round(y * 100)}%, ${Math.round(k * 100)}%)`);
+
+                    preventRecursiveUpdate = false;
+                }
+
+                // === EVENT LISTENERS ===
+
+                // Hex Input
+                $("#inputHex").on("input", function () {
+                    const val = $(this).val();
+                    if (val.length >= 3) {
+                        const tc = tinycolor("#" + val);
+                        if (tc.isValid()) updateFromColor(tc);
+                    }
+                });
+
+                // RGB Inputs
+                $("#inputR, #inputG, #inputB").on("input", () => {
+                    const r = $("#inputR").val();
+                    const g = $("#inputG").val();
+                    const b = $("#inputB").val();
+                    updateFromColor(tinycolor({ r, g, b }));
+                });
+
+                // HSL Inputs
+                $("#inputH, #inputS, #inputL").on("input", () => {
+                    const h = $("#inputH").val();
+                    const s = $("#inputS").val();
+                    const l = $("#inputL").val();
+                    updateFromColor(tinycolor({ h, s, l }));
+                });
+
+                // CMYK Inputs (Manual logic since TinyColor inputs don't accept CMYK)
+                $("#inputC, #inputM, #inputY, #inputK").on("input", () => {
+                    const c = $("#inputC").val() / 100;
+                    const m = $("#inputM").val() / 100;
+                    const y = $("#inputY").val() / 100;
+                    const k = $("#inputK").val() / 100;
+
+                    const r = 255 * (1 - c) * (1 - k);
+                    const g = 255 * (1 - m) * (1 - k);
+                    const b = 255 * (1 - y) * (1 - k);
+
+                    updateFromColor(tinycolor({ r, g, b }));
+                });
+
+                // Initial load
+                updateFromColor(tinycolor("#3b82f6"));
+            })(jQuery);
+        </script>
+    </body>
+</html>
